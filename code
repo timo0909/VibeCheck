@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeCheck - Find Your Perfect Activity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        dark: '#181818'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #5D5CDE 0%, #7C4DFF 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .mood-button {
+            transition: all 0.3s ease;
+        }
+        .mood-button:hover {
+            transform: scale(1.05);
+        }
+        .mood-button.selected {
+            background: #5D5CDE;
+            color: white;
+            transform: scale(1.1);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-dark text-gray-900 dark:text-white min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white p-6 text-center">
+        <h1 class="text-3xl font-bold mb-2">VibeCheck</h1>
+        <p class="text-blue-100">Find your perfect activity in Zurich</p>
+        <div class="mt-4 text-sm text-blue-100">
+            📍 <span id="location">Zurich, Switzerland</span> • 
+            <span id="current-time"></span>
+        </div>
+        <div class="mt-3 flex justify-center space-x-4 text-xs">
+            <a href="https://eatwith.an" target="_blank" class="text-blue-100 hover:text-white transition-colors">EatWith</a>
+            <a href="https://harrysding.com" target="_blank" class="text-blue-100 hover:text-white transition-colors">Harry's Ding</a>
+            <a href="https://ronorp.net" target="_blank" class="text-blue-100 hover:text-white transition-colors">Ronorp</a>
+            <a href="https://instagram.com" target="_blank" class="text-blue-100 hover:text-white transition-colors">Instagram</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 max-w-lg">
+        
+        <!-- Mood Selection -->
+        <section id="mood-selection" class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-center">What's your vibe today?</h2>
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="chill">
+                    <div class="text-2xl mb-2">☕</div>
+                    <div class="font-medium">Chill</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Relax & unwind</div>
+                </button>
+                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="adventurous">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="font-medium">Adventurous</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Try something new</div>
+                </button>
+                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="social">
+                    <div class="text-2xl mb-2">👥</div>
+                    <div class="font-medium">Social</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Meet & connect</div>
+                </button>
+                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="cultural">
+                    <div class="text-2xl mb-2">🎨</div>
+                    <div class="font-medium">Cultural</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Art & history</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loading" class="hidden text-center py-12">
+            <div class="pulse-animation text-4xl mb-4">🔍</div>
+            <h3 class="text-xl font-semibold mb-2">Finding your perfect vibe...</h3>
+            <p class="text-gray-600 dark:text-gray-400">Checking what's happening nearby</p>
+        </section>
+
+        <!-- Activity Suggestions -->
+        <section id="suggestions" class="hidden">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-semibold">Perfect for you</h2>
+                <button id="refresh-btn" class="text-primary font-medium">Refresh</button>
+            </div>
+            
+            <div id="activity-list" class="space-y-4">
+                <!-- Activities will be populated here -->
+            </div>
+
+            <div class="mt-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    ⏰ These suggestions are valid for the next 2 hours
+                </p>
+                <button id="new-mood-btn" class="text-primary font-medium text-sm">
+                    Choose different mood
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: false 
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+        updateTime();
+        setInterval(updateTime, 60000);
+
+        // Activity data for different moods
+        const activities = {
+            chill: [
+                {
+                    name: "Café Henrici",
+                    type: "Coffee Shop",
+                    distance: "0.8 km",
+                    validUntil: "2 hours",
+                    description: "Cozy atmosphere with excellent coffee and pastries",
+                    emoji: "☕",
+                    special: "Free WiFi, quiet corners",
+                    source: "Local favorite"
+                },
+                {
+                    name: "Lindenhof Park",
+                    type: "Park",
+                    distance: "1.2 km", 
+                    validUntil: "2 hours",
+                    description: "Peaceful hilltop park with city views",
+                    emoji: "🌳",
+                    special: "Perfect for reading",
+                    source: "Instagram hotspot"
+                },
+                {
+                    name: "Modissa Tea Lounge",
+                    type: "Tea House",
+                    distance: "0.6 km",
+                    validUntil: "2 hours",
+                    description: "Hidden gem with 50+ premium teas and comfy seating",
+                    emoji: "🍵",
+                    special: "Instagram-worthy latte art",
+                    source: "@zurich_hidden_gems"
+                },
+                {
+                    name: "Sukkulenten-Sammlung",
+                    type: "Botanical Garden",
+                    distance: "1.8 km",
+                    validUntil: "1.5 hours",
+                    description: "World's largest succulent collection - super Instagrammable",
+                    emoji: "🌵",
+                    special: "Free entry, trending on TikTok",
+                    source: "@plantlover_zurich"
+                },
+                {
+                    name: "Thermalbad & Spa Zurich",
+                    type: "Spa",
+                    distance: "2.1 km",
+                    validUntil: "2 hours",
+                    description: "Rooftop thermal baths with mountain views",
+                    emoji: "🧘",
+                    special: "Open until 22:00",
+                    source: "harrysding.com"
+                }
+            ],
+            adventurous: [
+                {
+                    name: "Uetliberg Hiking Trail",
+                    type: "Outdoor Activity",
+                    distance: "2.5 km",
+                    validUntil: "2 hours",
+                    description: "Mountain hiking with panoramic city views",
+                    emoji: "🥾",
+                    special: "Clear weather today!",
+                    source: "ronorp.net"
+                },
+                {
+                    name: "Pumptrack Zurich West",
+                    type: "Urban Sports",
+                    distance: "1.3 km",
+                    validUntil: "2 hours",
+                    description: "BMX and skateboard track - viral on TikTok lately",
+                    emoji: "🛹",
+                    special: "Free access, bring your board!",
+                    source: "@zurich_street_culture"
+                },
+                {
+                    name: "Escape Room Zurich",
+                    type: "Entertainment",
+                    distance: "1.5 km",
+                    validUntil: "1.5 hours",
+                    description: "Challenging puzzles and mystery rooms",
+                    emoji: "🔐",
+                    special: "Walk-ins welcome",
+                    source: "harrysding.com"
+                },
+                {
+                    name: "Rhine Falls Day Trip",
+                    type: "Day Adventure",
+                    distance: "45 min by train",
+                    validUntil: "3 hours",
+                    description: "Europe's most powerful waterfall - perfect for content creation",
+                    emoji: "💦",
+                    special: "Boat rides available, epic drone shots",
+                    source: "@swiss_adventures"
+                },
+                {
+                    name: "Lake Zurich Stand-Up Paddling",
+                    type: "Water Sports",
+                    distance: "1.8 km",
+                    validUntil: "2 hours",
+                    description: "SUP rental with sunset views - Instagram gold",
+                    emoji: "🏄‍♀️",
+                    special: "Golden hour vibes, waterproof phone cases",
+                    source: "@zurich_watersports"
+                }
+            ],
+            social: [
+                {
+                    name: "Frau Gerolds Garten",
+                    type: "Beer Garden",
+                    distance: "1.6 km",
+                    validUntil: "2 hours",
+                    description: "Vibrant outdoor space with food trucks",
+                    emoji: "🍻",
+                    special: "Live music tonight",
+                    source: "ronorp.net"
+                },
+                {
+                    name: "Clouds - Prime Tower",
+                    type: "Rooftop Bar",
+                    distance: "2.2 km",
+                    validUntil: "2 hours",
+                    description: "35th floor bar with 360° city views - ultimate Instagram spot",
+                    emoji: "🌆",
+                    special: "Sunset cocktails, dress code required",
+                    source: "@zurich_nightlife"
+                },
+                {
+                    name: "Zurich Language Exchange",
+                    type: "Meetup",
+                    distance: "0.9 km",
+                    validUntil: "1 hour",
+                    description: "Meet locals and practice languages",
+                    emoji: "💬",
+                    special: "Starting at 19:00",
+                    source: "Local community"
+                },
+                {
+                    name: "Viadukt Market",
+                    type: "Food Market",
+                    distance: "1.4 km",
+                    validUntil: "2 hours",
+                    description: "Trendy market under railway arches - foodie paradise",
+                    emoji: "🥘",
+                    special: "Artisan foods, wine tastings",
+                    source: "@foodie_zurich"
+                },
+                {
+                    name: "Helvti Diner",
+                    type: "Restaurant",
+                    distance: "1.1 km",
+                    validUntil: "2 hours",
+                    description: "American-style diner with communal seating",
+                    emoji: "🍔",
+                    special: "Happy hour until 20:00",
+                    source: "harrysding.com"
+                }
+            ],
+            cultural: [
+                {
+                    name: "Kunsthaus Zurich",
+                    type: "Art Museum",
+                    distance: "1.3 km",
+                    validUntil: "2 hours",
+                    description: "World-class art collection and exhibitions",
+                    emoji: "🎨",
+                    special: "New Monet exhibition",
+                    source: "harrysding.com"
+                },
+                {
+                    name: "Zürich West Street Art",
+                    type: "Art Walk",
+                    distance: "1.7 km",
+                    validUntil: "2 hours",
+                    description: "Self-guided tour of vibrant street murals - perfect for Instagram",
+                    emoji: "🎭",
+                    special: "Free walking tour, trending hashtag #ZurichWestArt",
+                    source: "@zurich_streetart"
+                },
+                {
+                    name: "Grossmünster Church",
+                    type: "Historical Site",
+                    distance: "0.7 km",
+                    validUntil: "1.5 hours",
+                    description: "Iconic twin-towered church with city history",
+                    emoji: "⛪",
+                    special: "Tower climb available",
+                    source: "ronorp.net"
+                },
+                {
+                    name: "Cabaret Voltaire",
+                    type: "Cultural Venue",
+                    distance: "0.9 km",
+                    validUntil: "2 hours",
+                    description: "Birthplace of Dada movement - quirky art exhibitions and events",
+                    emoji: "🎪",
+                    special: "Underground art scene, very Instagram-worthy",
+                    source: "@zurich_underground"
+                },
+                {
+                    name: "Photobastei",
+                    type: "Photography Gallery",
+                    distance: "1.1 km",
+                    validUntil: "1.5 hours",
+                    description: "Contemporary photography in converted bunker - viral on TikTok",
+                    emoji: "📸",
+                    special: "Interactive exhibitions, perfect for content creators",
+                    source: "@photo_zurich"
+                }
+            ]
+        };
+
+        // DOM elements
+        const moodButtons = document.querySelectorAll('.mood-button');
+        const moodSection = document.getElementById('mood-selection');
+        const loadingSection = document.getElementById('loading');
+        const suggestionsSection = document.getElementById('suggestions');
+        const activityList = document.getElementById('activity-list');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const newMoodBtn = document.getElementById('new-mood-btn');
+
+        let selectedMood = null;
+
+        // Mood selection
+        moodButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                selectedMood = button.dataset.mood;
+                selectMood(selectedMood);
+            });
+        });
+
+        function selectMood(mood) {
+            // Update button states
+            moodButtons.forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.mood === mood) {
+                    btn.classList.add('selected');
+                }
+            });
+
+            // Show loading
+            setTimeout(() => {
+                moodSection.classList.add('hidden');
+                loadingSection.classList.remove('hidden');
+                
+                // Show suggestions after loading
+                setTimeout(() => {
+                    showSuggestions(mood);
+                }, 2000);
+            }, 500);
+        }
+
+        function showSuggestions(mood) {
+            loadingSection.classList.add('hidden');
+            suggestionsSection.classList.remove('hidden');
+            
+            const moodActivities = activities[mood] || [];
+            activityList.innerHTML = '';
+
+            moodActivities.forEach((activity, index) => {
+                const activityCard = createActivityCard(activity);
+                activityList.appendChild(activityCard);
+                
+                // Stagger animation
+                setTimeout(() => {
+                    activityCard.style.opacity = '1';
+                    activityCard.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }
+
+        function createActivityCard(activity) {
+            const card = document.createElement('div');
+            card.className = 'bg-white dark:bg-gray-800 rounded-xl p-5 shadow-lg border border-gray-100 dark:border-gray-700 card-hover cursor-pointer';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            
+            card.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    <div class="text-3xl">${activity.emoji}</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold text-lg">${activity.name}</h3>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${activity.distance}</span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">${activity.description}</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">
+                                ${activity.type}
+                            </span>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Valid for ${activity.validUntil}</div>
+                                <div class="text-xs text-green-600 dark:text-green-400 font-medium">${activity.special}</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                                💡 Found via ${activity.source || 'Local recommendation'}
+                            </span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}" 
+                               target="_blank" 
+                               class="flex-1 bg-primary text-white px-3 py-2 rounded-lg text-xs font-medium text-center hover:bg-primary/90 transition-colors"
+                               onclick="event.stopPropagation()">
+                                📍 Directions
+                            </a>
+                            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                                    onclick="event.stopPropagation(); showActivityDetails('${activity.name}')">
+                                ℹ️ Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                // Simulate opening activity details or navigation
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                    alert(`Opening directions to ${activity.name}...\n\n(In the real app, this would integrate with maps and provide detailed information)`);
+                }, 150);
+            });
+
+            return card;
+        }
+
+        // Refresh suggestions
+        refreshBtn.addEventListener('click', () => {
+            if (selectedMood) {
+                loadingSection.classList.remove('hidden');
+                suggestionsSection.classList.add('hidden');
+                setTimeout(() => showSuggestions(selectedMood), 1500);
+            }
+        });
+
+        // Back to mood selection
+        newMoodBtn.addEventListener('click', () => {
+            suggestionsSection.classList.add('hidden');
+            moodSection.classList.remove('hidden');
+            moodButtons.forEach(btn => btn.classList.remove('selected'));
+            selectedMood = null;
+        });
+
+        // Show activity details
+        function showActivityDetails(activityName) {
+            const allActivities = Object.values(activities).flat();
+            const activity = allActivities.find(a => a.name === activityName);
+            
+            if (activity) {
+                alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\n\n(In the real app, this would show a detailed modal with photos, reviews, and booking options)`);
+            }
+        }
+    </script>
+</body>
+</html>
+
