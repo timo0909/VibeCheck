@@ -64,12 +64,6 @@
             📍 <span id="location">Zurich, Switzerland</span> • 
             <span id="current-time"></span>
         </div>
-        <div class="mt-3 flex justify-center space-x-4 text-xs">
-            <a href="https://www.eatwith.com" target="_blank" class="text-blue-100 hover:text-white transition-colors">EatWith</a>
-            <a href="https://harrysding.ch" target="_blank" class="text-blue-100 hover:text-white transition-colors">Harry's Ding</a>
-            <a href="https://ronorp.net" target="_blank" class="text-blue-100 hover:text-white transition-colors">Ronorp</a>
-            <a href="https://zuerich.com" target="_blank" class="text-blue-100 hover:text-white transition-colors">Zuerich</a>
-        </div>
     </header>
 
     <!-- Main Content -->
@@ -143,7 +137,7 @@
 
         <!-- Footer -->
         <footer class="mt-12 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>&copy; 2025 VibeCheck. All rights reserved.</p>
+            <p>© 2025 VibeCheck. All rights reserved.</p>
             <div class="mt-2 flex justify-center space-x-4">
                 <a href="https://x.com/intent/tweet?text=Check%20out%20VibeCheck%20for%20awesome%20Zurich%20activities!&url=https://timo0909.github.io/VibeCheck" target="_blank" class="text-primary hover:underline">Share on X</a>
                 <a href="https://www.instagram.com" target="_blank" class="text-primary hover:underline">Share on Instagram</a>
@@ -169,27 +163,29 @@
         updateTime();
         setInterval(updateTime, 60000);
 
-        // Mock API data (replace with real API in production)
-        const activities = {
+        // Mock Instagram data (API restricted, replace with backend in production)
+        const instagramData = [
+            { name: "Umbrella Alley", type: "Photo Spot", distance: "1.2 km", validUntil: "2 hours", description: "Colorful umbrellas over a trendy street, perfect for Instagram", emoji: "🌂", special: "Top Instagram spot", source: "Instagram #ZurichSpots", price: 0, rating: 4.7 },
+            { name: "Lindenhof Viewpoint", type: "Scenic View", distance: "0.8 km", validUntil: "2 hours", description: "Historic square with stunning city views", emoji: "🌄", special: "Trending on Instagram", source: "Instagram #VisitZurich", price: 0, rating: 4.8 }
+        ];
+
+        // Mock fallback data with Google ratings
+        const fallbackActivities = {
             chill: [
-                { name: "Babu’s Bakery & Coffeehouse", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Artisanal pastries and specialty coffee in a cozy setting", emoji: "☕", special: "Free WiFi", source: "zuri-isst.ch", price: 10 },
-                { name: "Botanical Garden Zurich", type: "Park", distance: "2.0 km", validUntil: "2 hours", description: "Tranquil gardens with exotic plants", emoji: "🌳", special: "Free entry", source: "zuerich.com", price: 0 },
-                { name: "Mame Coffee", type: "Coffee Shop", distance: "1.1 km", validUntil: "2 hours", description: "Japanese-style coffee with minimalist vibes", emoji: "🍵", special: "Try the matcha latte", source: "harrysding.ch", price: 8 }
+                { name: "Babu’s Bakery & Coffeehouse", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Artisanal pastries and specialty coffee", emoji: "☕", special: "Free WiFi", source: "tsri.ch", price: 10, rating: 4.5 },
+                { name: "Botanical Garden Zurich", type: "Park", distance: "2.0 km", validUntil: "2 hours", description: "Tranquil gardens with exotic plants", emoji: "🌳", special: "Free entry", source: "zuerich.com", price: 0, rating: 4.6 }
             ],
             adventurous: [
-                { name: "Uetliberg Trail", type: "Hiking", distance: "2.8 km", validUntil: "2 hours", description: "Scenic hike with city views", emoji: "🥾", special: "Sunset views", source: "zuerich.com", price: 0 },
-                { name: "Boda Borg Zurich", type: "Adventure Game", distance: "1.7 km", validUntil: "1.5 hours", description: "Team-based physical challenges", emoji: "🔐", special: "Book online for discount", source: "ronorp.net", price: 35 },
-                { name: "SUP Lake Zurich", type: "Water Sports", distance: "1.9 km", validUntil: "2 hours", description: "Stand-up paddling with lake views", emoji: "🏄‍♀️", special: "Rental available", source: "harrysding.ch", price: 25 }
+                { name: "Uetliberg Trail", type: "Hiking", distance: "2.8 km", validUntil: "2 hours", description: "Scenic hike with city views", emoji: "🥾", special: "Sunset views", source: "zuerich.com", price: 0, rating: 4.7 },
+                { name: "Boda Borg Zurich", type: "Adventure Game", distance: "1.7 km", validUntil: "1.5 hours", description: "Team-based physical challenges", emoji: "🔐", special: "Book online for discount", source: "eventfrog.ch", price: 35, rating: 4.4 }
             ],
             social: [
-                { name: "Frau Gerolds Garten", type: "Beer Garden", distance: "1.6 km", validUntil: "2 hours", description: "Lively spot with food trucks and music", emoji: "🍻", special: "Live DJ tonight", source: "ronorp.net", price: 15 },
-                { name: "Rimini Bar", type: "Bar", distance: "0.8 km", validUntil: "2 hours", description: "Open-air bar by the river", emoji: "🌆", special: "Happy hour until 20:00", source: "zuri-isst.ch", price: 10 },
-                { name: "Zürich Language Meetup", type: "Meetup", distance: "1.0 km", validUntil: "1 hour", description: "Connect with locals over drinks", emoji: "💬", special: "Free entry", source: "ronorp.net", price: 0 }
+                { name: "Frau Gerolds Garten", type: "Beer Garden", distance: "1.6 km", validUntil: "2 hours", description: "Lively spot with food trucks and music", emoji: "🍻", special: "Live DJ tonight", source: "zurichunplugged.ch", price: 15, rating: 4.5 },
+                { name: "Rimini Bar", type: "Bar", distance: "0.8 km", validUntil: "2 hours", description: "Open-air bar by the river", emoji: "🌆", special: "Happy hour until 20:00", source: "tsri.ch", price: 10, rating: 4.4 }
             ],
             cultural: [
-                { name: "Kunsthaus Zürich", type: "Art Museum", distance: "1.3 km", validUntil: "2 hours", description: "Modern and classic art exhibitions", emoji: "🎨", special: "New Picasso exhibit", source: "zuerich.com", price: 18 },
-                { name: "Zürich Street Art Tour", type: "Art Walk", distance: "1.5 km", validUntil: "2 hours", description: "Guided tour of street murals", emoji: "🎭", special: "Free with registration", source: "ronorp.net", price: 0 },
-                { name: "Cabaret Voltaire", type: "Cultural Venue", distance: "0.9 km", validUntil: "2 hours", description: "Historic Dada art hub", emoji: "🎪", special: "Live performance tonight", source: "harrysding.ch", price: 20 }
+                { name: "Kunsthaus Zürich", type: "Art Museum", distance: "1.3 km", validUntil: "2 hours", description: "Modern and classic art exhibitions", emoji: "🎨", special: "New Picasso exhibit", source: "zuerich.com", price: 18, rating: 4.6 },
+                { name: "Zürich Street Art Tour", type: "Art Walk", distance: "1.5 km", validUntil: "2 hours", description: "Guided tour of street murals", emoji: "🎭", special: "Free with registration", source: "eventfrog.ch", price: 0, rating: 4.5 }
             ]
         };
 
@@ -207,10 +203,30 @@
         let selectedMood = null;
         let selectedPrice = 'all';
 
-        // Mock API fetch (replace with real API in production)
-        async function fetchActivities() {
-            // Simulate API call with delay
-            return new Promise(resolve => setTimeout(() => resolve(activities), 1000));
+        // Eventbrite API fetch
+        async function fetchActivities(mood) {
+            const apiKey = 'YOUR_EVENTBRITE_API_KEY'; // Replace with your Eventbrite API key
+            const url = `https://www.eventbriteapi.com/v3/events/search/?q=${mood}&location.address=Zurich,Switzerland&location.within=3km&token=${apiKey}`;
+            try {
+                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${apiKey}` } });
+                const data = await response.json();
+                const events = data.events.map(event => ({
+                    name: event.name.text,
+                    type: mood.charAt(0).toUpperCase() + mood.slice(1),
+                    distance: "Within 3 km",
+                    validUntil: "2 hours",
+                    description: event.description.text ? event.description.text.slice(0, 100) + '...' : 'Exciting event in Zurich',
+                    emoji: mood === 'chill' ? '☕' : mood === 'adventurous' ? '🥾' : mood === 'social' ? '🍻' : '🎨',
+                    special: event.is_free ? 'Free entry' : 'Check for discounts',
+                    source: 'eventbrite.com',
+                    price: event.is_free ? 0 : Math.floor(Math.random() * 50) + 10, // Mock price if not free
+                    rating: 4.5 // Mock rating (replace with Google Reviews API in production)
+                }));
+                return [...events, ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
+            } catch (error) {
+                console.error('API fetch failed:', error);
+                return [...(fallbackActivities[mood] || []), ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
+            }
         }
 
         // Mood selection
@@ -224,15 +240,12 @@
         // Price filter
         priceFilter.addEventListener('change', () => {
             selectedPrice = priceFilter.value;
-            if (selectedMood) showSuggestions(selectedMood);
+            if (selectedMood) selectMood(selectedMood);
         });
 
-        // Language toggle (basic implementation)
+        // Language toggle (mock)
         languageToggle.addEventListener('change', (e) => {
-            const lang = e.target.value;
-            document.querySelectorAll('[data-lang]').forEach(el => {
-                el.textContent = el.dataset.lang === lang ? el.dataset[lang] : el.textContent;
-            });
+            alert(`Switched to ${e.target.value === 'en' ? 'English' : 'Deutsch'} (Mock feature)`);
         });
 
         function selectMood(mood) {
@@ -242,18 +255,17 @@
             });
             moodSection.classList.add('hidden');
             loadingSection.classList.remove('hidden');
-            fetchActivities().then(data => {
-                setTimeout(() => showSuggestions(mood), 1000);
+            fetchActivities(mood).then(data => {
+                setTimeout(() => showSuggestions(mood, data), 1000);
             });
         }
 
-        function showSuggestions(mood) {
+        function showSuggestions(mood, activities) {
             loadingSection.classList.add('hidden');
             suggestionsSection.classList.remove('hidden');
             activityList.innerHTML = '';
 
-            const moodActivities = activities[mood] || [];
-            const filteredActivities = moodActivities.filter(activity => {
+            const filteredActivities = activities.filter(activity => {
                 if (selectedPrice === 'all') return true;
                 if (selectedPrice === 'free') return activity.price === 0;
                 if (selectedPrice === '0-20') return activity.price > 0 && activity.price <= 20;
@@ -291,6 +303,7 @@
                             <div class="text-right">
                                 <div class="text-xs text-gray-500 dark:text-gray-400">Valid for ${activity.validUntil}</div>
                                 <div class="text-xs text-accent font-medium">Price: ${activity.price === 0 ? 'Free' : `CHF ${activity.price}`}</div>
+                                <div class="text-xs text-yellow-500 font-medium">Rating: ${activity.rating}/5</div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -324,11 +337,9 @@
         }
 
         function showActivityDetails(name) {
-            const allActivities = Object.values(activities).flat();
-            const activity = allActivities.find(a => a.name === name);
-            if (activity) {
-                alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nPrice: ${activity.price === 0 ? 'Free' : `CHF ${activity.price}`}\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\nSource: ${activity.source}`);
-            }
+            const allActivities = [...Object.values(fallbackActivities).flat(), ...instagramData];
+            const activity = allActivities.find(a => a.name === name) || { name, description: 'Event details from Eventbrite', type: 'Event', distance: 'Within 3 km', price: 0, special: 'Check Eventbrite for details', validUntil: '2 hours', source: 'eventbrite.com', rating: 4.5 };
+            alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nPrice: ${activity.price === 0 ? 'Free' : `CHF ${activity.price}`}\nRating: ${activity.rating}/5\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\nSource: ${activity.source}`);
         }
 
         // Mock notification opt-in
@@ -345,4 +356,3 @@
     </script>
 </body>
 </html>
-
