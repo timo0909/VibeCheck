@@ -71,13 +71,13 @@
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen font-sans">
     <!-- Hero Section -->
-    <header class="relative h-80 overflow-hidden">
+    <header class="relative h-80 sm:h-96 overflow-hidden">
         <div class="absolute inset-0 bg-zurich-hero bg-cover bg-center"></div>
         <div class="hero-gradient absolute inset-0"></div>
-        <div class="relative z-10 h-full flex flex-col justify-center items-center text-white px-6">
-            <h1 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">VibeCheck</h1>
-            <p class="text-lg md:text-xl font-light opacity-90">Discover Zurich’s hidden gems for your mood</p>
-            <div class="mt-4 flex items-center space-x-6 text-sm font-medium">
+        <div class="relative z-10 h-full flex flex-col justify-center items-center text-white px-4 sm:px-6">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight">VibeCheck</h1>
+            <p class="text-base sm:text-lg md:text-xl font-light opacity-90">Discover Zurich’s hidden gems for your mood</p>
+            <div class="mt-4 flex items-center space-x-4 sm:space-x-6 text-sm font-medium">
                 <span id="location"><i class="fas fa-map-marker-alt mr-2"></i>Zurich, Switzerland</span>
                 <span id="current-time"><i class="fas fa-clock mr-2"></i></span>
             </div>
@@ -85,69 +85,66 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-10 max-w-5xl">
+    <main class="container mx-auto px-4 py-8 sm:py-10 max-w-5xl">
         <!-- Controls -->
-        <div class="flex justify-end mb-8">
-            <select id="language-toggle" class="bg-white border border-gray-200 text-gray-900 px-4 py-2 rounded-lg text-sm font-medium">
+        <div class="flex justify-end mb-6 sm:mb-8">
+            <select id="language-toggle" class="bg-white border border-gray-200 text-gray-900 px-3 py-2 rounded-lg text-sm font-medium">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
         </div>
 
         <!-- Mood Selection -->
-        <section id="mood-selection" class="mb-12">
-            <h2 class="text-3xl font-semibold mb-6 text-center">Choose Your Mood</h2>
-            <div class="grid grid-cols-4 gap-4 mb-8">
-                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="chill">
-                    <i class="fas fa-coffee text-2xl mb-2"></i>
-                    <div class="font-semibold">Chill</div>
+        <section id="mood-selection" class="mb-10 sm:mb-12">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 text-center">Choose Your Mood</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <button class="mood-button p-3 sm:p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="chill">
+                    <i class="fas fa-coffee text-xl sm:text-2xl mb-2"></i>
+                    <div class="font-semibold text-sm sm:text-base">Chill</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="adventurous">
-                    <i class="fas fa-mountain text-2xl mb-2"></i>
-                    <div class="font-semibold">Adventurous</div>
+                <button class="mood-button p-3 sm:p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="adventurous">
+                    <i class="fas fa-mountain text-xl sm:text-2xl mb-2"></i>
+                    <div class="font-semibold text-sm sm:text-base">Adventurous</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="social">
-                    <i class="fas fa-users text-2xl mb-2"></i>
-                    <div class="font-semibold">Social</div>
+                <button class="mood-button p-3 sm:p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="social">
+                    <i class="fas fa-users text-xl sm:text-2xl mb-2"></i>
+                    <div class="font-semibold text-sm sm:text-base">Social</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="cultural">
-                    <i class="fas fa-palette text-2xl mb-2"></i>
-                    <div class="font-semibold">Cultural</div>
+                <button class="mood-button p-3 sm:p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="cultural">
+                    <i class="fas fa-palette text-xl sm:text-2xl mb-2"></i>
+                    <div class="font-semibold text-sm sm:text-base">Cultural</div>
                 </button>
             </div>
         </section>
 
         <!-- Loading State -->
-        <section id="loading" class="hidden text-center py-12">
-            <div class="animate-spin text-4xl mb-4 text-primary"><i class="fas fa-compass"></i></div>
-            <h3 class="text-xl font-semibold mb-2">Finding Your Vibe...</h3>
-            <p class="text-gray-600">Curating Zurich’s best experiences</p>
+        <section id="loading" class="hidden text-center py-10 sm:py-12">
+            <div class="animate-spin text-3xl sm:text-4xl mb-4 text-primary"><i class="fas fa-compass"></i></div>
+            <h3 class="text-lg sm:text-xl font-semibold mb-2">Finding Your Vibe...</h3>
+            <p class="text-gray-600 text-sm sm:text-base">Curating Zurich’s best experiences</p>
         </section>
 
         <!-- Activity Suggestions -->
         <section id="suggestions" class="hidden">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-semibold">Your Zurich Hidden Gems</h2>
-                <button id="refresh-btn" class="text-primary font-medium hover:underline">Refresh</button>
+            <div class="flex justify-between items-center mb-4 sm:mb-6">
+                <h2 class="text-xl sm:text-2xl font-semibold">Your Zurich Hidden Gems</h2>
+                <button id="refresh-btn" class="text-primary font-medium text-sm sm:text-base hover:underline">Refresh</button>
             </div>
-            <div id="activity-grid" class="grid grid-cols-3 gap-6"></div>
-            <div class="mt-8 text-center">
-                <button id="new-mood-btn" class="text-primary font-medium hover:underline">Choose Different Mood</button>
+            <div id="activity-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"></div>
+            <div class="mt-6 sm:mt-8 text-center">
+                <button id="new-mood-btn" class="text-primary font-medium text-sm sm:text-base hover:underline">Choose Different Mood</button>
             </div>
         </section>
 
         <!-- Favorites Section -->
-        <section id="favorites" class="mt-12 hidden">
-            <h2 class="text-2xl font-semibold mb-6">Your Favorites</h2>
-            <div id="favorites-grid" class="grid grid-cols-3 gap-6"></div>
+        <section id="favorites" class="mt-10 sm:mt-12 hidden">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Your Favorites</h2>
+            <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"></div>
         </section>
 
         <!-- Footer -->
-        <footer class="mt-12 text-center text-sm text-gray-600">
-            <p>© 2025 VibeCheck • 
-                <a href="https://x.com/intent/tweet?text=Exploring%20Zurich%20with%20VibeCheck!&url=https://timo0909.github.io/VibeCheck" target="_blank" class="text-primary hover:underline">X</a> • 
-                <a href="https://www.instagram.com" target="_blank" class="text-primary hover:underline">Instagram</a>
-            </p>
+        <footer class="mt-10 sm:mt-12 text-center text-sm text-gray-600">
+            <p>© 2025 VibeCheck</p>
         </footer>
     </main>
 
@@ -161,159 +158,63 @@
         updateTime();
         setInterval(updateTime, 60000);
 
-        // Activity data with Zurich pictures, Google Maps images, reviews, and hidden gems
+        // Expanded activity data with Zurich pictures, Google Maps images, reviews, and hidden gems
         const activities = {
             chill: [
-                { 
-                    name: "Café Schober", 
-                    type: "Café", 
-                    distance: "0.8 km", 
-                    validUntil: "2 hours", 
-                    description: "Traditional Swiss café with handcrafted chocolates", 
-                    special: "Vintage charm", 
-                    source: "Google Reviews", 
-                    rating: 4.6, 
-                    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Cozy and charming, perfect for a relaxing coffee break. The pastries are divine!" 
-                },
-                { 
-                    name: "Werdinsel", 
-                    type: "Outdoor", 
-                    distance: "2.5 km", 
-                    validUntil: "2 hours", 
-                    description: "Quiet island on the Limmat, perfect for a peaceful escape", 
-                    special: "Summer festival vibe", 
-                    source: "Spotted by Locals", 
-                    rating: 4.5, 
-                    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "A hidden gem for picnics and river views, away from the crowds!" 
-                },
-                { 
-                    name: "Kweer", 
-                    type: "Café", 
-                    distance: "1.0 km", 
-                    validUntil: "2 hours", 
-                    description: "Trendy café with great hot chocolate and cozy vibes", 
-                    special: "Perfect for working or dates", 
-                    source: "Spotted by Locals", 
-                    rating: 4.7, 
-                    image: "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Amazing hot chocolate and a chill atmosphere, highly recommend!" 
-                }
+                { name: "Café Schober", type: "Café", distance: "0.8 km", validUntil: "2 hours", description: "Traditional Swiss café with handcrafted chocolates", special: "Vintage charm", source: "Google Reviews", rating: 4.6, image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Cozy and charming, perfect for a relaxing coffee break!" },
+                { name: "Werdinsel", type: "Outdoor", distance: "2.5 km", validUntil: "2 hours", description: "Quiet island on the Limmat for a peaceful escape", special: "River views", source: "Spotted by Locals", rating: 4.5, image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Perfect for a serene picnic, a true hidden gem!" },
+                { name: "Kweer", type: "Café", distance: "1.0 km", validUntil: "2 hours", description: "Trendy café with great hot chocolate", special: "Cozy vibes", source: "Spotted by Locals", rating: 4.7, image: "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Best hot chocolate in town, great for working or chilling." },
+                { name: "Lindenhof", type: "Outdoor", distance: "0.5 km", validUntil: "2 hours", description: "Historic hill with city views and chess tables", special: "Relaxing spot", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Peaceful spot with stunning views over Zurich!" },
+                { name: "Babu’s Bakery", type: "Café", distance: "1.2 km", validUntil: "2 hours", description: "Artisanal breads and pastries in a cozy setting", special: "Local favorite", source: "Google Reviews", rating: 4.7, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "The croissants are to die for, a must-visit!" },
+                { name: "Platzspitz Park", type: "Outdoor", distance: "1.5 km", validUntil: "2 hours", description: "Tranquil park at the confluence of two rivers", special: "Hidden gem", source: "Reddit r/zurich", rating: 4.4, image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Lovely for a quiet walk, feels like a secret oasis." },
+                { name: "Irchel Park", type: "Outdoor", distance: "2.8 km", validUntil: "2 hours", description: "Sprawling park with ponds and greenery", special: "Botanical vibes", source: "Zurich Tourism", rating: 4.5, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Perfect for a relaxing afternoon, great for families." },
+                { name: "John’s Café", type: "Café", distance: "1.1 km", validUntil: "2 hours", description: "Quaint café with homemade cakes", special: "Local gem", source: "Google Reviews", rating: 4.6, image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Super cozy with amazing cakes, a hidden treasure!" },
+                { name: "Zürichhorn", type: "Outdoor", distance: "2.0 km", validUntil: "2 hours", description: "Lakeside park with sculptures and views", special: "Relaxing walks", source: "Tripadvisor", rating: 4.5, image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Beautiful lake views, perfect for a chill evening." },
+                { name: "Café Odeon", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Historic café with Art Nouveau charm", special: "Cultural vibe", source: "Google Reviews", rating: 4.4, image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "A step back in time, great for coffee lovers." },
+                { name: "Belvoirpark", type: "Outdoor", distance: "2.3 km", validUntil: "2 hours", description: "Elegant park with rose gardens", special: "Quiet retreat", source: "Zurich Tourism", rating: 4.5, image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Gorgeous gardens, ideal for a calm stroll." },
+                { name: "Mame", type: "Café", distance: "1.3 km", validUntil: "2 hours", description: "Japanese-inspired café with matcha drinks", special: "Unique vibe", source: "Google Reviews", rating: 4.7, image: "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Amazing matcha latte, super cozy atmosphere!" }
             ],
             adventurous: [
-                { 
-                    name: "Uetliberg Trail", 
-                    type: "Outdoor", 
-                    distance: "3.2 km", 
-                    validUntil: "2 hours", 
-                    description: "Hike with panoramic city and lake views", 
-                    special: "Sunset views", 
-                    source: "Zurich Tourism", 
-                    rating: 4.8, 
-                    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Stunning views! The trail is moderate and worth it for the Alps backdrop." 
-                },
-                { 
-                    name: "Loorenkopf Lookout Tower", 
-                    type: "Outdoor", 
-                    distance: "4.0 km", 
-                    validUntil: "2 hours", 
-                    description: "Wooded hill with a tower offering Alpine views", 
-                    special: "Hidden gem", 
-                    source: "Explanders", 
-                    rating: 4.6, 
-                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "A lesser-known spot with incredible city and mountain vistas!" 
-                },
-                { 
-                    name: "Polybahn Ride", 
-                    type: "Activity", 
-                    distance: "0.5 km", 
-                    validUntil: "2 hours", 
-                    description: "Historic funicular with views over Zurich", 
-                    special: "Quick ride to ETH terrace", 
-                    source: "Earth’s Attractions", 
-                    rating: 4.5, 
-                    image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Short but scenic ride, great for a quick city overview." 
-                }
+                { name: "Uetliberg Trail", type: "Outdoor", distance: "3.2 km", validUntil: "2 hours", description: "Hike with panoramic city and lake views", special: "Sunset views", source: "Zurich Tourism", rating: 4.8, image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Breathtaking views, a must for hikers!" },
+                { name: "Loorenkopf Lookout Tower", type: "Outdoor", distance: "4.0 km", validUntil: "2 hours", description: "Wooded hill with a tower offering Alpine views", special: "Hidden gem", source: "Explanders", rating: 4.6, image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Stunning panorama, worth the trek!" },
+                { name: "Polybahn Ride", type: "Activity", distance: "0.5 km", validUntil: "2 hours", description: "Historic funicular with city views", special: "Quick scenic ride", source: "Earth’s Attractions", rating: 4.5, image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Short but fun, great city overview." },
+                { name: "Lake Zurich SUP", type: "Outdoor", distance: "1.5 km", validUntil: "2 hours", description: "Stand-up paddling on Lake Zurich", special: "Beginner friendly", source: "Zurich Tourism", rating: 4.4, image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Super fun on the lake, great for all levels!" },
+                { name: "Zürich Food Tour", type: "Activity", distance: "0.7 km", validUntil: "2 hours", description: "Guided tour of culinary gems", special: "Local flavors", source: "Tripadvisor", rating: 4.9, image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Amazing food and stories, a Zurich must-do!" },
+                { name: "Felsenegg Cable Car", type: "Outdoor", distance: "5.0 km", validUntil: "2 hours", description: "Cable car to scenic viewpoints", special: "Alpine vistas", source: "Zurich Tourism", rating: 4.5, image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Quick ride, incredible views over the Alps!" },
+                { name: "Sihlwald Forest", type: "Outdoor", distance: "6.2 km", validUntil: "2 hours", description: "Wilderness trails in Zurich’s forest", special: "Nature escape", source: "Reddit r/switzerland", rating: 4.6, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Perfect for a nature adventure, so peaceful!" },
+                { name: "Rheinfalls Day Trip", type: "Outdoor", distance: "40 km", validUntil: "2 hours", description: "Europe’s largest waterfall, short trip from Zurich", special: "Epic views", source: "Tripadvisor", rating: 4.7, image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "A thrilling day trip, the falls are stunning!" },
+                { name: "Katzensee Lake", type: "Outdoor", distance: "7.0 km", validUntil: "2 hours", description: "Hidden lake for swimming and hiking", special: "Local secret", source: "Spotted by Locals", rating: 4.4, image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Great for a swim, feels like a private retreat." },
+                { name: "Bikepark Zürich", type: "Outdoor", distance: "3.8 km", validUntil: "2 hours", description: "Mountain biking trails for all levels", special: "Adrenaline rush", source: "Zurich Tourism", rating: 4.5, image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Fun trails, perfect for biking enthusiasts!" },
+                { name: "Old Town Bike Tour", type: "Activity", distance: "0.6 km", validUntil: "2 hours", description: "Guided bike tour through medieval streets", special: "Local guide", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Fun way to see Zurich’s history up close!" },
+                { name: "Zürichberg Hike", type: "Outdoor", distance: "2.9 km", validUntil: "2 hours", description: "Scenic trails with city and lake views", special: "Hidden gem", source: "Reddit r/zurich", rating: 4.5, image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Great hike, amazing views from the top!" }
             ],
             social: [
-                { 
-                    name: "Frau Gerolds Garten", 
-                    type: "Restaurant", 
-                    distance: "1.8 km", 
-                    validUntil: "2 hours", 
-                    description: "Trendy bar with food trucks and live music", 
-                    special: "Vibrant nightlife", 
-                    source: "Instagram #harrysding", 
-                    rating: 4.5, 
-                    image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Lively spot with great food trucks, perfect for a night out!" 
-                },
-                { 
-                    name: "Rimini Bar", 
-                    type: "Restaurant", 
-                    distance: "0.9 km", 
-                    validUntil: "2 hours", 
-                    description: "Open-air bar by the Limmat river", 
-                    special: "Happy hour vibes", 
-                    source: "Instagram #zürifood", 
-                    rating: 4.4, 
-                    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Great riverside location, ideal for drinks with friends." 
-                },
-                { 
-                    name: "Yume Ramen", 
-                    type: "Restaurant", 
-                    distance: "1.4 km", 
-                    validUntil: "2 hours", 
-                    description: "Authentic Japanese ramen spot", 
-                    special: "Hidden gem", 
-                    source: "Instagram #zürifood", 
-                    rating: 4.8, 
-                    image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Best ramen in Zurich! Cozy and flavorful, a must-try." 
-                }
+                { name: "Frau Gerolds Garten", type: "Restaurant", distance: "1.8 km", validUntil: "2 hours", description: "Trendy bar with food trucks and live music", special: "Vibrant nightlife", source: "Google Reviews", rating: 4.5, image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Lively spot, great for a night out with friends!" },
+                { name: "Rimini Bar", type: "Restaurant", distance: "0.9 km", validUntil: "2 hours", description: "Open-air bar by the Limmat river", special: "Happy hour vibes", source: "Google Reviews", rating: 4.4, image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Perfect for riverside drinks, so chill!" },
+                { name: "Yume Ramen", type: "Restaurant", distance: "1.4 km", validUntil: "2 hours", description: "Authentic Japanese ramen spot", special: "Hidden gem", source: "Google Reviews", rating: 4.8, image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Best ramen in Zurich, cozy and flavorful!" },
+                { name: "Marktküche", type: "Restaurant", distance: "1.0 km", validUntil: "2 hours", description: "Farm-to-table dining experience", special: "Local ingredients", source: "Google Reviews", rating: 4.7, image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Fresh and delicious, a foodie’s paradise!" },
+                { name: "Dachterrasse Hiltl", type: "Restaurant", distance: "0.8 km", validUntil: "2 hours", description: "Rooftop vegetarian restaurant with city views", special: "Vegan options", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1555396273-36734e8e5a12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Amazing veggie food with a killer view!" },
+                { name: "Viadukt Food Hall", type: "Restaurant", distance: "2.0 km", validUntil: "2 hours", description: "Trendy food market under railway arches", special: "Diverse cuisines", source: "Google Reviews", rating: 4.5, image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "So many food options, great vibe!" },
+                { name: "Bovino Steakhouse", type: "Restaurant", distance: "1.2 km", validUntil: "2 hours", description: "Premium steaks in a lively setting", special: "Local favorite", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Best steaks in town, perfect for groups!" },
+                { name: "Kronenhalle Bar", type: "Restaurant", distance: "0.7 km", validUntil: "2 hours", description: "Classic bar with artistic ambiance", special: "Historic charm", source: "Google Reviews", rating: 4.4, image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Elegant and artsy, great for cocktails." },
+                { name: "Zeughauskeller", type: "Restaurant", distance: "0.9 km", validUntil: "2 hours", description: "Traditional Swiss tavern with hearty dishes", special: "Local vibe", source: "Tripadvisor", rating: 4.5, image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Authentic Swiss food, super lively atmosphere!" },
+                { name: "Bar am Wasser", type: "Restaurant", distance: "1.1 km", validUntil: "2 hours", description: "Stylish bar by Lake Zurich", special: "Sunset drinks", source: "Google Reviews", rating: 4.6, image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Perfect for drinks with lake views!" },
+                { name: "La Soupe", type: "Restaurant", distance: "1.3 km", validUntil: "2 hours", description: "Cozy spot for soups and small plates", special: "Hidden gem", source: "Google Reviews", rating: 4.7, image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Delicious soups, a cozy local favorite!" },
+                { name: "Les Halles", type: "Restaurant", distance: "2.2 km", validUntil: "2 hours", description: "Rustic French bistro with lively vibe", special: "Mediterranean flair", source: "Tripadvisor", rating: 4.5, image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Fun vibe, great for a social dinner!" }
             ],
             cultural: [
-                { 
-                    name: "Kunsthaus Zürich", 
-                    type: "Art", 
-                    distance: "1.3 km", 
-                    validUntil: "2 hours", 
-                    description: "World-class art from Monet to Picasso", 
-                    special: "Klimt exhibition", 
-                    source: "Zurich Tourism", 
-                    rating: 4.7, 
-                    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Incredible collection, the Klimt exhibit is a highlight!" 
-                },
-                { 
-                    name: "Grossmünster", 
-                    type: "Art", 
-                    distance: "0.6 km", 
-                    validUntil: "2 hours", 
-                    description: "Iconic church with Chagall stained glass", 
-                    special: "Historical tours", 
-                    source: "Tripadvisor", 
-                    rating: 4.6, 
-                    image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Beautiful church, the stained glass is stunning." 
-                },
-                { 
-                    name: "Teehütte Fallätsche", 
-                    type: "Activity", 
-                    distance: "3.5 km", 
-                    validUntil: "2 hours", 
-                    description: "Rustic Sunday tea hut with forest views", 
-                    special: "Local hidden gem", 
-                    source: "Reddit r/askswitzerland", 
-                    rating: 4.5, 
-                    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-                    review: "Perfect for a cozy Sunday outing, feels like a secret!" 
-                }
+                { name: "Kunsthaus Zürich", type: "Art", distance: "1.3 km", validUntil: "2 hours", description: "World-class art from Monet to Picasso", special: "Klimt exhibition", source: "Zurich Tourism", rating: 4.7, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Incredible collection, a must for art lovers!" },
+                { name: "Grossmünster", type: "Art", distance: "0.6 km", validUntil: "2 hours", description: "Iconic church with Chagall stained glass", special: "Historical tours", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Stunning stained glass, rich history!" },
+                { name: "Teehütte Fallätsche", type: "Activity", distance: "3.5 km", validUntil: "2 hours", description: "Rustic Sunday tea hut with forest views", special: "Local hidden gem", source: "Reddit r/askswitzerland", rating: 4.5, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Cozy and unique, perfect Sunday outing!" },
+                { name: "Swiss National Museum", type: "Art", distance: "1.0 km", validUntil: "2 hours", description: "Swiss history in a fairytale castle", special: "Interactive exhibits", source: "Zurich Tourism", rating: 4.4, image: "https://images.unsplash.com/photo-1566552881560-0be862a7c445?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Fascinating museum, great for families!" },
+                { name: "Old Town Walking Tour", type: "Activity", distance: "0.4 km", validUntil: "2 hours", description: "Self-guided tour through medieval streets", special: "Photo spots", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Loved exploring Zurich’s history at my own pace!" },
+                { name: "Rietberg Museum", type: "Art", distance: "2.1 km", validUntil: "2 hours", description: "Global art in a serene park setting", special: "Asian collections", source: "Google Reviews", rating: 4.5, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Beautiful museum, the park is a bonus!" },
+                { name: "Opernhaus Zürich", type: "Art", distance: "1.2 km", validUntil: "2 hours", description: "World-class opera house with stunning interiors", special: "Evening shows", source: "Zurich Tourism", rating: 4.7, image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Gorgeous venue, a cultural gem!" },
+                { name: "Polyterrasse", type: "Activity", distance: "0.8 km", validUntil: "2 hours", description: "Scenic terrace at ETH Zurich with city views", special: "Hidden gem", source: "Reddit r/zurich", rating: 4.5, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Amazing views, a local secret!" },
+                { name: "Museum für Gestaltung", type: "Art", distance: "1.5 km", validUntil: "2 hours", description: "Design museum with innovative exhibits", special: "Modern art", source: "Google Reviews", rating: 4.4, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Really cool exhibits, great for design fans!" },
+                { name: "Fraumünster", type: "Art", distance: "0.7 km", validUntil: "2 hours", description: "Church with iconic Chagall windows", special: "Artistic history", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "The Chagall windows are breathtaking!" },
+                { name: "Cabaret Voltaire", type: "Art", distance: "0.9 km", validUntil: "2 hours", description: "Birthplace of Dadaism with art events", special: "Cultural hub", source: "Google Reviews", rating: 4.5, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Unique spot, full of artistic history!" },
+                { name: "Zunfthaus zur Waag", type: "Activity", distance: "0.8 km", validUntil: "2 hours", description: "Historic guild house with cultural dining", special: "Traditional vibe", source: "Tripadvisor", rating: 4.6, image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80", review: "Lovely historic setting, great for dinner!" }
             ]
         };
 
@@ -385,36 +286,36 @@
             const card = document.createElement('div');
             card.className = 'card-glass rounded-xl overflow-hidden card-hover fade-in';
             card.innerHTML = `
-                <div class="relative h-48">
+                <div class="relative h-40 sm:h-48">
                     <img src="${activity.image}" alt="${activity.name}" class="w-full h-full object-cover">
                     <div class="image-overlay absolute inset-0"></div>
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium">${activity.type}</span>
+                    <div class="absolute top-3 sm:top-4 left-3 sm:left-4">
+                        <span class="bg-primary text-white px-2 sm:px-3 py-1 rounded-full text-xs font-medium">${activity.type}</span>
                     </div>
-                    <div class="absolute bottom-4 left-4 right-4">
-                        <h3 class="text-white font-semibold text-lg">${activity.name}</h3>
-                        <div class="flex items-center text-white text-sm opacity-90">
+                    <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
+                        <h3 class="text-white font-semibold text-base sm:text-lg">${activity.name}</h3>
+                        <div class="flex items-center text-white text-xs sm:text-sm opacity-90">
                             <span>${activity.distance}</span>
-                            <span class="mx-2">•</span>
+                            <span class="mx-1 sm:mx-2">•</span>
                             <span>Rating: ${activity.rating}/5</span>
                         </div>
                     </div>
                 </div>
-                <div class="p-5 bg-white">
-                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">${activity.description}</p>
-                    <p class="text-gray-500 text-xs italic mb-3">"${activity.review}"</p>
-                    <div class="flex items-center justify-between mb-3">
+                <div class="p-4 sm:p-5 bg-white">
+                    <p class="text-gray-600 text-sm mb-2 sm:mb-3 line-clamp-2">${activity.description}</p>
+                    <p class="text-gray-500 text-xs italic mb-2 sm:mb-3">"${activity.review}"</p>
+                    <div class="flex items-center justify-between mb-2 sm:mb-3">
                         <span class="text-xs text-purple-600 font-medium">${activity.source}</span>
                         <span class="text-xs text-gray-500">Valid for ${activity.validUntil}</span>
                     </div>
                     <div class="flex space-x-2">
                         <a href="https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}" 
                            target="_blank" 
-                           class="flex-1 bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium text-center hover:bg-primary/90 transition-colors"
+                           class="flex-1 bg-primary text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-center hover:bg-primary/90 transition-colors"
                            onclick="event.stopPropagation()">Directions</a>
-                        <button class="flex-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+                        <button class="flex-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-200 transition-colors"
                                 onclick="event.stopPropagation(); showActivityDetails('${activity.name}')">Details</button>
-                        <button class="flex-none bg-accent text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-colors"
+                        <button class="flex-none bg-accent text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-accent/90 transition-colors"
                                 onclick="event.stopPropagation(); saveToFavorites('${activity.name}', '${activity.image}', '${activity.type}', '${activity.rating}')">Save</button>
                     </div>
                 </div>
@@ -444,9 +345,9 @@
                     const card = document.createElement('div');
                     card.className = 'card-glass rounded-xl overflow-hidden card-hover fade-in';
                     card.innerHTML = `
-                        <img src="${favorite.image}" alt="${favorite.name}" class="w-full h-32 object-cover">
-                        <div class="p-4 bg-white">
-                            <h3 class="font-semibold text-base">${favorite.name}</h3>
+                        <img src="${favorite.image}" alt="${favorite.name}" class="w-full h-28 sm:h-32 object-cover">
+                        <div class="p-3 sm:p-4 bg-white">
+                            <h3 class="font-semibold text-sm sm:text-base">${favorite.name}</h3>
                             <p class="text-xs text-gray-600">${favorite.type} • ${favorite.rating}/5</p>
                         </div>
                     `;
@@ -475,17 +376,17 @@
             modal.className = 'fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4';
             modal.innerHTML = `
                 <div class="bg-white rounded-2xl max-w-lg w-full">
-                    <div class="relative h-48">
+                    <div class="relative h-40 sm:h-48">
                         <img src="${activity.image}" alt="${activity.name}" class="w-full h-full object-cover rounded-t-2xl">
                         <button onclick="this.closest('.fixed').remove()" class="absolute top-2 right-2 bg-white rounded-full p-2">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div class="p-6">
-                        <h2 class="text-xl font-semibold mb-2">${activity.name}</h2>
-                        <p class="text-gray-600 mb-4">${activity.description}</p>
-                        <p class="text-gray-500 text-sm italic mb-4">"${activity.review}"</p>
-                        <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="p-4 sm:p-6">
+                        <h2 class="text-lg sm:text-xl font-semibold mb-2">${activity.name}</h2>
+                        <p class="text-gray-600 text-sm mb-3 sm:mb-4">${activity.description}</p>
+                        <p class="text-gray-500 text-xs sm:text-sm italic mb-3 sm:mb-4">"${activity.review}"</p>
+                        <div class="grid grid-cols-2 gap-2 text-xs sm:text-sm">
                             <div><strong>Type:</strong> ${activity.type}</div>
                             <div><strong>Distance:</strong> ${activity.distance}</div>
                             <div><strong>Rating:</strong> ${activity.rating}/5</div>
