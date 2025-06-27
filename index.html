@@ -3,183 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeCheck - Your Zurich Activity Finder</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%235D5CDE' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79-4-4-4z'/></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>VibeCheck - Zurich Activity Finder</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%232563EB' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79-4-4-4z'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#5D5CDE',
-                        secondary: '#7C4DFF',
-                        dark: '#1A1A2E',
-                        accent: '#34D399'
+                        primary: '#2563EB',
+                        secondary: '#6B7280',
+                        accent: '#059669'
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Poppins', 'sans-serif']
+                    },
+                    backgroundImage: {
+                        'zurich-hero': "url('https://images.unsplash.com/photo-1515488042361-ee00e0ddd4fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
                     }
                 }
             }
         }
     </script>
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #5D5CDE 0%, #7C4DFF 100%);
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.9) 0%, rgba(59, 130, 246, 0.7) 100%);
+        }
+        .card-glass {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         .card-hover {
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         .mood-button {
             transition: all 0.3s ease;
         }
         .mood-button:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
         }
         .mood-button.selected {
-            background: #5D5CDE;
+            background: #2563EB;
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
-        .pulse-animation {
-            animation: pulse 2s infinite;
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .image-overlay {
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%);
         }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-dark text-gray-900 dark:text-white min-h-screen font-sans">
-    <!-- Header -->
-    <header class="gradient-bg text-white p-6 text-center">
-        <h1 class="text-3xl font-bold mb-2">VibeCheck</h1>
-        <p class="text-blue-100 text-sm">Discover mood-based activities in Zurich</p>
-        <div class="mt-4 text-sm text-blue-100">
-            📍 <span id="location">Zurich, Switzerland</span> • 
-            <span id="current-time"></span>
+<body class="bg-gray-50 text-gray-900 min-h-screen font-sans">
+    <!-- Hero Section -->
+    <header class="relative h-80 overflow-hidden">
+        <div class="absolute inset-0 bg-zurich-hero bg-cover bg-center"></div>
+        <div class="hero-gradient absolute inset-0"></div>
+        <div class="relative z-10 h-full flex flex-col justify-center items-center text-white px-6">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 tracking-tight">VibeCheck</h1>
+            <p class="text-lg md:text-xl font-light opacity-90">Discover Zurich’s hidden gems for your mood</p>
+            <div class="mt-4 flex items-center space-x-6 text-sm font-medium">
+                <span id="location"><i class="fas fa-map-marker-alt mr-2"></i>Zurich, Switzerland</span>
+                <span id="current-time"><i class="fas fa-clock mr-2"></i></span>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 max-w-2xl">
-        <!-- Language Toggle -->
-        <div class="flex justify-end mb-4">
-            <select id="language-toggle" class="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white p-2 rounded-lg text-sm">
+    <main class="container mx-auto px-4 py-10 max-w-5xl">
+        <!-- Controls -->
+        <div class="flex justify-end mb-8">
+            <select id="language-toggle" class="bg-white border border-gray-200 text-gray-900 px-4 py-2 rounded-lg text-sm font-medium">
                 <option value="en">English</option>
                 <option value="de">Deutsch</option>
             </select>
         </div>
 
         <!-- Mood Selection -->
-        <section id="mood-selection" class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-center">What's your vibe today?</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="chill">
-                    <div class="text-2xl mb-2">☕</div>
-                    <div class="font-medium">Chill</div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Relax & unwind</div>
+        <section id="mood-selection" class="mb-12">
+            <h2 class="text-3xl font-semibold mb-6 text-center">Choose Your Mood</h2>
+            <div class="grid grid-cols-4 gap-4 mb-8">
+                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="chill">
+                    <i class="fas fa-coffee text-2xl mb-2"></i>
+                    <div class="font-semibold">Chill</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="adventurous">
-                    <div class="text-2xl mb-2">🎯</div>
-                    <div class="font-medium">Adventurous</div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Try something new</div>
+                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="adventurous">
+                    <i class="fas fa-mountain text-2xl mb-2"></i>
+                    <div class="font-semibold">Adventurous</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="social">
-                    <div class="text-2xl mb-2">👥</div>
-                    <div class="font-medium">Social</div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Meet & connect</div>
+                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="social">
+                    <i class="fas fa-users text-2xl mb-2"></i>
+                    <div class="font-semibold">Social</div>
                 </button>
-                <button class="mood-button p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-center" data-mood="cultural">
-                    <div class="text-2xl mb-2">🎨</div>
-                    <div class="font-medium">Cultural</div>
-                    <div class="text-xs text-gray-600 dark:text-gray-400">Art & history</div>
+                <button class="mood-button p-4 rounded-xl bg-white border border-gray-200 text-center" data-mood="cultural">
+                    <i class="fas fa-palette text-2xl mb-2"></i>
+                    <div class="font-semibold">Cultural</div>
                 </button>
             </div>
         </section>
 
         <!-- Loading State -->
         <section id="loading" class="hidden text-center py-12">
-            <div class="pulse-animation text-4xl mb-4">🔍</div>
-            <h3 class="text-xl font-semibold mb-2">Finding your perfect vibe...</h3>
-            <p class="text-gray-600 dark:text-gray-400">Checking what's happening nearby</p>
+            <div class="animate-spin text-4xl mb-4 text-primary"><i class="fas fa-compass"></i></div>
+            <h3 class="text-xl font-semibold mb-2">Finding Your Vibe...</h3>
+            <p class="text-gray-600">Curating Zurich’s best experiences</p>
         </section>
 
         <!-- Activity Suggestions -->
         <section id="suggestions" class="hidden">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-semibold">Perfect for You</h2>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold">Your Zurich Hidden Gems</h2>
                 <button id="refresh-btn" class="text-primary font-medium hover:underline">Refresh</button>
             </div>
-            <div id="activity-list" class="space-y-4"></div>
-            <div class="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">⏰ Suggestions valid for the next 2 hours</p>
-                <button id="new-mood-btn" class="text-primary font-medium text-sm hover:underline">Choose different mood</button>
+            <div id="activity-grid" class="grid grid-cols-3 gap-6"></div>
+            <div class="mt-8 text-center">
+                <button id="new-mood-btn" class="text-primary font-medium hover:underline">Choose Different Mood</button>
             </div>
         </section>
 
+        <!-- Favorites Section -->
+        <section id="favorites" class="mt-12 hidden">
+            <h2 class="text-2xl font-semibold mb-6">Your Favorites</h2>
+            <div id="favorites-grid" class="grid grid-cols-3 gap-6"></div>
+        </section>
+
         <!-- Footer -->
-        <footer class="mt-12 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>© 2025 VibeCheck. All rights reserved.</p>
-            <div class="mt-2 flex justify-center space-x-4">
-                <a href="https://x.com/intent/tweet?text=Check%20out%20VibeCheck%20for%20awesome%20Zurich%20activities!&url=https://timo0909.github.io/VibeCheck" target="_blank" class="text-primary hover:underline">Share on X</a>
-                <a href="https://www.instagram.com" target="_blank" class="text-primary hover:underline">Share on Instagram</a>
-            </div>
+        <footer class="mt-12 text-center text-sm text-gray-600">
+            <p>© 2025 VibeCheck • 
+                <a href="https://x.com/intent/tweet?text=Exploring%20Zurich%20with%20VibeCheck!&url=https://timo0909.github.io/VibeCheck" target="_blank" class="text-primary hover:underline">X</a> • 
+                <a href="https://www.instagram.com" target="_blank" class="text-primary hover:underline">Instagram</a>
+            </p>
         </footer>
     </main>
 
     <script>
-        // Dark mode detection
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            document.documentElement.classList.toggle('dark', event.matches);
-        });
-
         // Update current time
         function updateTime() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Europe/Zurich' });
             document.getElementById('current-time').textContent = timeString;
         }
         updateTime();
         setInterval(updateTime, 60000);
 
-        // Mock Instagram hashtag tracker data (#züriisst, #harrysding, #zürifood)
-        const instagramData = [
-            { name: "Umbrella Alley", type: "Photo Spot", distance: "1.2 km", validUntil: "2 hours", description: "Colorful umbrellas over a trendy street, perfect for Instagram", emoji: "🌂", special: "Top Instagram spot", source: "Instagram #züriisst", rating: 4.7 },
-            { name: "Lindenhof Viewpoint", type: "Scenic View", distance: "0.8 km", validUntil: "2 hours", description: "Historic square with stunning city views", emoji: "🌄", special: "Trending on #harrysding", source: "Instagram #harrysding", rating: 4.8 },
-            { name: "BaoBae", type: "Pop-up Restaurant", distance: "1.5 km", validUntil: "2 hours", description: "Chinese bao buns with bold flavors by Gaijin founders", emoji: "🥟", special: "New pop-up, #zürifood", source: "Instagram #zürifood", rating: 4.6 },
-            { name: "Irma", type: "Bakery-Café", distance: "1.0 km", validUntil: "2 hours", description: "Artisanal sourdough breads in a cozy setting", emoji: "🥐", special: "Hidden gem, #züriisst", source: "Instagram #züriisst", rating: 4.5 },
-            { name: "Soi Thai", type: "Pop-up Restaurant", distance: "1.8 km", validUntil: "2 hours", description: "Legendary Thai pop-up with authentic flavors", emoji: "🍜", special: "Back for 2025, #zürifood", source: "Instagram #zürifood", rating: 4.7 }
-        ];
-
-        // Static activity data with Google Maps trending locations
+        // Activity data with Zurich pictures, Google Maps images, reviews, and hidden gems
         const activities = {
             chill: [
-                { name: "Babu’s Bakery & Coffeehouse", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Artisanal pastries and specialty coffee", emoji: "☕", special: "Free WiFi", source: "tsri.ch", rating: 4.5 },
-                { name: "Botanical Garden Zurich", type: "Park", distance: "2.0 km", validUntil: "2 hours", description: "Tranquil gardens with exotic plants", emoji: "🌳", special: "Top-rated on Google Maps", source: "zuerich.com", rating: 4.6 },
-                { name: "Irma", type: "Bakery-Café", distance: "1.0 km", validUntil: "2 hours", description: "Artisanal sourdough breads in a cozy setting", emoji: "🥐", special: "Hidden gem, #züriisst", source: "Instagram #züriisst", rating: 4.5 }
+                { 
+                    name: "Café Schober", 
+                    type: "Café", 
+                    distance: "0.8 km", 
+                    validUntil: "2 hours", 
+                    description: "Traditional Swiss café with handcrafted chocolates", 
+                    special: "Vintage charm", 
+                    source: "Google Reviews", 
+                    rating: 4.6, 
+                    image: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Cozy and charming, perfect for a relaxing coffee break. The pastries are divine!" 
+                },
+                { 
+                    name: "Werdinsel", 
+                    type: "Outdoor", 
+                    distance: "2.5 km", 
+                    validUntil: "2 hours", 
+                    description: "Quiet island on the Limmat, perfect for a peaceful escape", 
+                    special: "Summer festival vibe", 
+                    source: "Spotted by Locals", 
+                    rating: 4.5, 
+                    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "A hidden gem for picnics and river views, away from the crowds!" 
+                },
+                { 
+                    name: "Kweer", 
+                    type: "Café", 
+                    distance: "1.0 km", 
+                    validUntil: "2 hours", 
+                    description: "Trendy café with great hot chocolate and cozy vibes", 
+                    special: "Perfect for working or dates", 
+                    source: "Spotted by Locals", 
+                    rating: 4.7, 
+                    image: "https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Amazing hot chocolate and a chill atmosphere, highly recommend!" 
+                }
             ],
             adventurous: [
-                { name: "Uetliberg Trail", type: "Hiking", distance: "2.8 km", validUntil: "2 hours", description: "Scenic hike with city views", emoji: "🥾", special: "Sunset views", source: "zuerich.com", rating: 4.7 },
-                { name: "Boda Borg Zurich", type: "Adventure Game", distance: "1.7 km", validUntil: "1.5 hours", description: "Team-based physical challenges", emoji: "🔐", special: "Book online for discount", source: "eventfrog.ch", rating: 4.4 }
+                { 
+                    name: "Uetliberg Trail", 
+                    type: "Outdoor", 
+                    distance: "3.2 km", 
+                    validUntil: "2 hours", 
+                    description: "Hike with panoramic city and lake views", 
+                    special: "Sunset views", 
+                    source: "Zurich Tourism", 
+                    rating: 4.8, 
+                    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Stunning views! The trail is moderate and worth it for the Alps backdrop." 
+                },
+                { 
+                    name: "Loorenkopf Lookout Tower", 
+                    type: "Outdoor", 
+                    distance: "4.0 km", 
+                    validUntil: "2 hours", 
+                    description: "Wooded hill with a tower offering Alpine views", 
+                    special: "Hidden gem", 
+                    source: "Explanders", 
+                    rating: 4.6, 
+                    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "A lesser-known spot with incredible city and mountain vistas!" 
+                },
+                { 
+                    name: "Polybahn Ride", 
+                    type: "Activity", 
+                    distance: "0.5 km", 
+                    validUntil: "2 hours", 
+                    description: "Historic funicular with views over Zurich", 
+                    special: "Quick ride to ETH terrace", 
+                    source: "Earth’s Attractions", 
+                    rating: 4.5, 
+                    image: "https://images.unsplash.com/photo-1593604341350-1963a8d0d9c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Short but scenic ride, great for a quick city overview." 
+                }
             ],
             social: [
-                { name: "Frau Gerolds Garten", type: "Beer Garden", distance: "1.6 km", validUntil: "2 hours", description: "Lively spot with food trucks and music", emoji: "🍻", special: "Live DJ tonight, #harrysding", source: "zurichunplugged.ch", rating: 4.5 },
-                { name: "Rimini Bar", type: "Bar", distance: "0.8 km", validUntil: "2 hours", description: "Open-air bar by the river", emoji: "🌆", special: "Happy hour until 20:00", source: "tsri.ch", rating: 4.4 },
-                { name: "Latino Bistro", type: "Restaurant", distance: "1.3 km", validUntil: "2 hours", description: "Italian-Filipino fusion with retro charm", emoji: "🍽️", special: "New opening, #zürifood", source: "Instagram #zürifood", rating: 4.6 }
+                { 
+                    name: "Frau Gerolds Garten", 
+                    type: "Restaurant", 
+                    distance: "1.8 km", 
+                    validUntil: "2 hours", 
+                    description: "Trendy bar with food trucks and live music", 
+                    special: "Vibrant nightlife", 
+                    source: "Instagram #harrysding", 
+                    rating: 4.5, 
+                    image: "https://images.unsplash.com/photo-1544148103-0773bf10d330?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Lively spot with great food trucks, perfect for a night out!" 
+                },
+                { 
+                    name: "Rimini Bar", 
+                    type: "Restaurant", 
+                    distance: "0.9 km", 
+                    validUntil: "2 hours", 
+                    description: "Open-air bar by the Limmat river", 
+                    special: "Happy hour vibes", 
+                    source: "Instagram #zürifood", 
+                    rating: 4.4, 
+                    image: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Great riverside location, ideal for drinks with friends." 
+                },
+                { 
+                    name: "Yume Ramen", 
+                    type: "Restaurant", 
+                    distance: "1.4 km", 
+                    validUntil: "2 hours", 
+                    description: "Authentic Japanese ramen spot", 
+                    special: "Hidden gem", 
+                    source: "Instagram #zürifood", 
+                    rating: 4.8, 
+                    image: "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Best ramen in Zurich! Cozy and flavorful, a must-try." 
+                }
             ],
             cultural: [
-                { name: "Kunsthaus Zürich", type: "Art Museum", distance: "1.3 km", validUntil: "2 hours", description: "Modern and classic art exhibitions", emoji: "🎨", special: "New Picasso exhibit", source: "zuerich.com", rating: 4.6 },
-                { name: "Zürich Street Art Tour", type: "Art Walk", distance: "1.5 km", validUntil: "2 hours", description: "Guided tour of street murals", emoji: "🎭", special: "Free with registration", source: "eventfrog.ch", rating: 4.5 },
-                { name: "Neue Taverne", type: "Restaurant", distance: "1.1 km", validUntil: "2 hours", description: "Innovative vegetarian dishes in historic setting", emoji: "🥗", special: "Top-rated on Google Maps", source: "tsri.ch", rating: 4.7 }
+                { 
+                    name: "Kunsthaus Zürich", 
+                    type: "Art", 
+                    distance: "1.3 km", 
+                    validUntil: "2 hours", 
+                    description: "World-class art from Monet to Picasso", 
+                    special: "Klimt exhibition", 
+                    source: "Zurich Tourism", 
+                    rating: 4.7, 
+                    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Incredible collection, the Klimt exhibit is a highlight!" 
+                },
+                { 
+                    name: "Grossmünster", 
+                    type: "Art", 
+                    distance: "0.6 km", 
+                    validUntil: "2 hours", 
+                    description: "Iconic church with Chagall stained glass", 
+                    special: "Historical tours", 
+                    source: "Tripadvisor", 
+                    rating: 4.6, 
+                    image: "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Beautiful church, the stained glass is stunning." 
+                },
+                { 
+                    name: "Teehütte Fallätsche", 
+                    type: "Activity", 
+                    distance: "3.5 km", 
+                    validUntil: "2 hours", 
+                    description: "Rustic Sunday tea hut with forest views", 
+                    special: "Local hidden gem", 
+                    source: "Reddit r/askswitzerland", 
+                    rating: 4.5, 
+                    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    review: "Perfect for a cozy Sunday outing, feels like a secret!" 
+                }
             ]
         };
 
@@ -188,14 +322,17 @@
         const moodSection = document.getElementById('mood-selection');
         const loadingSection = document.getElementById('loading');
         const suggestionsSection = document.getElementById('suggestions');
-        const activityList = document.getElementById('activity-list');
+        const activityGrid = document.getElementById('activity-grid');
+        const favoritesSection = document.getElementById('favorites');
+        const favoritesGrid = document.getElementById('favorites-grid');
         const refreshBtn = document.getElementById('refresh-btn');
         const newMoodBtn = document.getElementById('new-mood-btn');
         const languageToggle = document.getElementById('language-toggle');
 
         let selectedMood = null;
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
-        // Mood selection
+        // Event listeners
         moodButtons.forEach(button => {
             button.addEventListener('click', () => {
                 selectedMood = button.dataset.mood;
@@ -203,22 +340,19 @@
             });
         });
 
-        // Language toggle (mock)
-        languageToggle.addEventListener('change', (e) => {
-            alert(`Switched to ${e.target.value === 'en' ? 'English' : 'Deutsch'} (Mock feature)`);
-        });
-
-        // Refresh button
         refreshBtn.addEventListener('click', () => {
             if (selectedMood) selectMood(selectedMood);
         });
 
-        // New mood button
         newMoodBtn.addEventListener('click', () => {
             suggestionsSection.classList.add('hidden');
             moodSection.classList.remove('hidden');
             selectedMood = null;
             moodButtons.forEach(btn => btn.classList.remove('selected'));
+        });
+
+        languageToggle.addEventListener('change', (e) => {
+            alert(`Switched to ${e.target.value === 'en' ? 'English' : 'Deutsch'} (Mock feature)`);
         });
 
         function selectMood(mood) {
@@ -234,96 +368,145 @@
         function showSuggestions(mood) {
             loadingSection.classList.add('hidden');
             suggestionsSection.classList.remove('hidden');
-            activityList.innerHTML = '';
+            activityGrid.innerHTML = '';
 
-            const selectedActivities = [...(activities[mood] || []), ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
+            const selectedActivities = activities[mood].slice(0, 3); // Limit to 3 activities
 
             selectedActivities.forEach((activity, index) => {
                 const activityCard = createActivityCard(activity);
-                activityList.appendChild(activityCard);
+                activityGrid.appendChild(activityCard);
                 setTimeout(() => {
-                    activityCard.style.opacity = '1';
-                    activityCard.style.transform = 'translateY(0)';
+                    activityCard.classList.add('visible');
                 }, index * 150);
             });
         }
 
         function createActivityCard(activity) {
             const card = document.createElement('div');
-            card.className = 'bg-white dark:bg-gray-800 rounded-xl p-5 shadow-lg border border-gray-100 dark:border-gray-700 card-hover cursor-pointer';
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'all 0.5s ease';
+            card.className = 'card-glass rounded-xl overflow-hidden card-hover fade-in';
             card.innerHTML = `
-                <div class="flex items-start space-x-4">
-                    <div class="text-3xl">${activity.emoji}</div>
-                    <div class="flex-1">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-lg">${activity.name}</h3>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">${activity.distance}</span>
+                <div class="relative h-48">
+                    <img src="${activity.image}" alt="${activity.name}" class="w-full h-full object-cover">
+                    <div class="image-overlay absolute inset-0"></div>
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium">${activity.type}</span>
+                    </div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="text-white font-semibold text-lg">${activity.name}</h3>
+                        <div class="flex items-center text-white text-sm opacity-90">
+                            <span>${activity.distance}</span>
+                            <span class="mx-2">•</span>
+                            <span>Rating: ${activity.rating}/5</span>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">${activity.description}</p>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">${activity.type}</span>
-                            <div class="text-right">
-                                <div class="text-xs text-gray-500 dark:text-gray-400">Valid for ${activity.validUntil}</div>
-                                <div class="text-xs text-yellow-500 font-medium">Rating: ${activity.rating}/5</div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <span class="text-xs text-purple-600 dark:text-purple-400 font-medium">💡 ${activity.source}</span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <a href="https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}" 
-                               target="_blank" 
-                               class="flex-1 bg-primary text-white px-3 py-2 rounded-lg text-xs font-medium text-center hover:bg-primary/90 transition-colors"
-                               onclick="event.stopPropagation()">📍 Directions</a>
-                            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                                    onclick="event.stopPropagation(); showActivityDetails('${activity.name}')">ℹ️ Details</button>
-                            <button class="flex-none bg-accent text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-accent/90 transition-colors"
-                                    onclick="event.stopPropagation(); saveToFavorites('${activity.name}')">⭐ Save</button>
-                        </div>
+                    </div>
+                </div>
+                <div class="p-5 bg-white">
+                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">${activity.description}</p>
+                    <p class="text-gray-500 text-xs italic mb-3">"${activity.review}"</p>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs text-purple-600 font-medium">${activity.source}</span>
+                        <span class="text-xs text-gray-500">Valid for ${activity.validUntil}</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}" 
+                           target="_blank" 
+                           class="flex-1 bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium text-center hover:bg-primary/90 transition-colors"
+                           onclick="event.stopPropagation()">Directions</a>
+                        <button class="flex-1 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+                                onclick="event.stopPropagation(); showActivityDetails('${activity.name}')">Details</button>
+                        <button class="flex-none bg-accent text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-accent/90 transition-colors"
+                                onclick="event.stopPropagation(); saveToFavorites('${activity.name}', '${activity.image}', '${activity.type}', '${activity.rating}')">Save</button>
                     </div>
                 </div>
             `;
             card.addEventListener('click', () => {
-                card.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    card.style.transform = 'scale(1)';
-                    window.open(`https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}`, '_blank');
-                }, 150);
+                window.open(`https://www.google.com/maps/search/${encodeURIComponent(activity.name + ', Zurich, Switzerland')}`, '_blank');
             });
             return card;
         }
 
-        function saveToFavorites(name) {
-            alert(`Saved ${name} to favorites! (In a real app, this would sync to user profile)`);
+        function saveToFavorites(name, image, type, rating) {
+            if (!favorites.some(f => f.name === name)) {
+                favorites.push({ name, image, type, rating });
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                updateFavorites();
+                alert(`Saved ${name} to favorites!`);
+            } else {
+                alert(`${name} is already in your favorites!`);
+            }
+        }
+
+        function updateFavorites() {
+            favoritesGrid.innerHTML = '';
+            if (favorites.length > 0) {
+                favoritesSection.classList.remove('hidden');
+                favorites.forEach(favorite => {
+                    const card = document.createElement('div');
+                    card.className = 'card-glass rounded-xl overflow-hidden card-hover fade-in';
+                    card.innerHTML = `
+                        <img src="${favorite.image}" alt="${favorite.name}" class="w-full h-32 object-cover">
+                        <div class="p-4 bg-white">
+                            <h3 class="font-semibold text-base">${favorite.name}</h3>
+                            <p class="text-xs text-gray-600">${favorite.type} • ${favorite.rating}/5</p>
+                        </div>
+                    `;
+                    favoritesGrid.appendChild(card);
+                });
+            } else {
+                favoritesSection.classList.add('hidden');
+            }
         }
 
         function showActivityDetails(name) {
-            const allActivities = [...Object.values(activities).flat(), ...instagramData];
-            const activity = allActivities.find(a => a.name === name) || { 
+            const allActivities = Object.values(activities).flat();
+            const activity = allActivities.find(a => a.name === name) || {
                 name, 
                 description: 'Details for this activity', 
                 type: 'Event', 
                 distance: 'Within 3 km', 
-                special: 'Check source for details', 
+                special: 'Check source', 
                 validUntil: '2 hours', 
                 source: 'VibeCheck', 
-                rating: 4.5 
+                rating: 4.5, 
+                image: 'https://images.unsplash.com/photo-1515488042361-ee00e0ddd4fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+                review: 'Explore this hidden gem!'
             };
-            alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nRating: ${activity.rating}/5\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\nSource: ${activity.source}`);
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-lg w-full">
+                    <div class="relative h-48">
+                        <img src="${activity.image}" alt="${activity.name}" class="w-full h-full object-cover rounded-t-2xl">
+                        <button onclick="this.closest('.fixed').remove()" class="absolute top-2 right-2 bg-white rounded-full p-2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold mb-2">${activity.name}</h2>
+                        <p class="text-gray-600 mb-4">${activity.description}</p>
+                        <p class="text-gray-500 text-sm italic mb-4">"${activity.review}"</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div><strong>Type:</strong> ${activity.type}</div>
+                            <div><strong>Distance:</strong> ${activity.distance}</div>
+                            <div><strong>Rating:</strong> ${activity.rating}/5</div>
+                            <div><strong>Source:</strong> ${activity.source}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
         }
 
-        // Mock notification opt-in
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            updateFavorites();
             if (!localStorage.getItem('notifications')) {
                 setTimeout(() => {
                     if (confirm('Enable notifications for new activity suggestions?')) {
                         localStorage.setItem('notifications', 'enabled');
                         alert('Notifications enabled! (Mock feature)');
                     }
-                }, 3000);
+                }, 2000);
             }
         });
     </script>
