@@ -76,18 +76,6 @@
             </select>
         </div>
 
-        <!-- Price Filter -->
-        <div class="mb-6">
-            <label for="price-filter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by Price (CHF):</label>
-            <select id="price-filter" class="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white p-2 rounded-lg text-sm">
-                <option value="all">All</option>
-                <option value="free">Free</option>
-                <option value="0-20">0–20 CHF</option>
-                <option value="20-50">20–50 CHF</option>
-                <option value="50+">50+ CHF</option>
-            </select>
-        </div>
-
         <!-- Mood Selection -->
         <section id="mood-selection" class="mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-center">What's your vibe today?</h2>
@@ -163,29 +151,35 @@
         updateTime();
         setInterval(updateTime, 60000);
 
-        // Mock Instagram data (API restricted, replace with backend in production)
+        // Mock Instagram hashtag tracker data (#züriisst, #harrysding, #zürifood)
         const instagramData = [
-            { name: "Umbrella Alley", type: "Photo Spot", distance: "1.2 km", validUntil: "2 hours", description: "Colorful umbrellas over a trendy street, perfect for Instagram", emoji: "🌂", special: "Top Instagram spot", source: "Instagram #ZurichSpots", price: 0, rating: 4.7 },
-            { name: "Lindenhof Viewpoint", type: "Scenic View", distance: "0.8 km", validUntil: "2 hours", description: "Historic square with stunning city views", emoji: "🌄", special: "Trending on Instagram", source: "Instagram #VisitZurich", price: 0, rating: 4.8 }
+            { name: "Umbrella Alley", type: "Photo Spot", distance: "1.2 km", validUntil: "2 hours", description: "Colorful umbrellas over a trendy street, perfect for Instagram", emoji: "🌂", special: "Top Instagram spot", source: "Instagram #züriisst", rating: 4.7 },
+            { name: "Lindenhof Viewpoint", type: "Scenic View", distance: "0.8 km", validUntil: "2 hours", description: "Historic square with stunning city views", emoji: "🌄", special: "Trending on #harrysding", source: "Instagram #harrysding", rating: 4.8 },
+            { name: "BaoBae", type: "Pop-up Restaurant", distance: "1.5 km", validUntil: "2 hours", description: "Chinese bao buns with bold flavors by Gaijin founders", emoji: "🥟", special: "New pop-up, #zürifood", source: "Instagram #zürifood", rating: 4.6 },
+            { name: "Irma", type: "Bakery-Café", distance: "1.0 km", validUntil: "2 hours", description: "Artisanal sourdough breads in a cozy setting", emoji: "🥐", special: "Hidden gem, #züriisst", source: "Instagram #züriisst", rating: 4.5 },
+            { name: "Soi Thai", type: "Pop-up Restaurant", distance: "1.8 km", validUntil: "2 hours", description: "Legendary Thai pop-up with authentic flavors", emoji: "🍜", special: "Back for 2025, #zürifood", source: "Instagram #zürifood", rating: 4.7 }
         ];
 
-        // Mock fallback data with Google ratings
-        const fallbackActivities = {
+        // Static activity data with Google Maps trending locations
+        const activities = {
             chill: [
-                { name: "Babu’s Bakery & Coffeehouse", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Artisanal pastries and specialty coffee", emoji: "☕", special: "Free WiFi", source: "tsri.ch", price: 10, rating: 4.5 },
-                { name: "Botanical Garden Zurich", type: "Park", distance: "2.0 km", validUntil: "2 hours", description: "Tranquil gardens with exotic plants", emoji: "🌳", special: "Free entry", source: "zuerich.com", price: 0, rating: 4.6 }
+                { name: "Babu’s Bakery & Coffeehouse", type: "Café", distance: "0.9 km", validUntil: "2 hours", description: "Artisanal pastries and specialty coffee", emoji: "☕", special: "Free WiFi", source: "tsri.ch", rating: 4.5 },
+                { name: "Botanical Garden Zurich", type: "Park", distance: "2.0 km", validUntil: "2 hours", description: "Tranquil gardens with exotic plants", emoji: "🌳", special: "Top-rated on Google Maps", source: "zuerich.com", rating: 4.6 },
+                { name: "Irma", type: "Bakery-Café", distance: "1.0 km", validUntil: "2 hours", description: "Artisanal sourdough breads in a cozy setting", emoji: "🥐", special: "Hidden gem, #züriisst", source: "Instagram #züriisst", rating: 4.5 }
             ],
             adventurous: [
-                { name: "Uetliberg Trail", type: "Hiking", distance: "2.8 km", validUntil: "2 hours", description: "Scenic hike with city views", emoji: "🥾", special: "Sunset views", source: "zuerich.com", price: 0, rating: 4.7 },
-                { name: "Boda Borg Zurich", type: "Adventure Game", distance: "1.7 km", validUntil: "1.5 hours", description: "Team-based physical challenges", emoji: "🔐", special: "Book online for discount", source: "eventfrog.ch", price: 35, rating: 4.4 }
+                { name: "Uetliberg Trail", type: "Hiking", distance: "2.8 km", validUntil: "2 hours", description: "Scenic hike with city views", emoji: "🥾", special: "Sunset views", source: "zuerich.com", rating: 4.7 },
+                { name: "Boda Borg Zurich", type: "Adventure Game", distance: "1.7 km", validUntil: "1.5 hours", description: "Team-based physical challenges", emoji: "🔐", special: "Book online for discount", source: "eventfrog.ch", rating: 4.4 }
             ],
             social: [
-                { name: "Frau Gerolds Garten", type: "Beer Garden", distance: "1.6 km", validUntil: "2 hours", description: "Lively spot with food trucks and music", emoji: "🍻", special: "Live DJ tonight", source: "zurichunplugged.ch", price: 15, rating: 4.5 },
-                { name: "Rimini Bar", type: "Bar", distance: "0.8 km", validUntil: "2 hours", description: "Open-air bar by the river", emoji: "🌆", special: "Happy hour until 20:00", source: "tsri.ch", price: 10, rating: 4.4 }
+                { name: "Frau Gerolds Garten", type: "Beer Garden", distance: "1.6 km", validUntil: "2 hours", description: "Lively spot with food trucks and music", emoji: "🍻", special: "Live DJ tonight, #harrysding", source: "zurichunplugged.ch", rating: 4.5 },
+                { name: "Rimini Bar", type: "Bar", distance: "0.8 km", validUntil: "2 hours", description: "Open-air bar by the river", emoji: "🌆", special: "Happy hour until 20:00", source: "tsri.ch", rating: 4.4 },
+                { name: "Latino Bistro", type: "Restaurant", distance: "1.3 km", validUntil: "2 hours", description: "Italian-Filipino fusion with retro charm", emoji: "🍽️", special: "New opening, #zürifood", source: "Instagram #zürifood", rating: 4.6 }
             ],
             cultural: [
-                { name: "Kunsthaus Zürich", type: "Art Museum", distance: "1.3 km", validUntil: "2 hours", description: "Modern and classic art exhibitions", emoji: "🎨", special: "New Picasso exhibit", source: "zuerich.com", price: 18, rating: 4.6 },
-                { name: "Zürich Street Art Tour", type: "Art Walk", distance: "1.5 km", validUntil: "2 hours", description: "Guided tour of street murals", emoji: "🎭", special: "Free with registration", source: "eventfrog.ch", price: 0, rating: 4.5 }
+                { name: "Kunsthaus Zürich", type: "Art Museum", distance: "1.3 km", validUntil: "2 hours", description: "Modern and classic art exhibitions", emoji: "🎨", special: "New Picasso exhibit", source: "zuerich.com", rating: 4.6 },
+                { name: "Zürich Street Art Tour", type: "Art Walk", distance: "1.5 km", validUntil: "2 hours", description: "Guided tour of street murals", emoji: "🎭", special: "Free with registration", source: "eventfrog.ch", rating: 4.5 },
+                { name: "Neue Taverne", type: "Restaurant", distance: "1.1 km", validUntil: "2 hours", description: "Innovative vegetarian dishes in historic setting", emoji: "🥗", special: "Top-rated on Google Maps", source: "tsri.ch", rating: 4.7 }
             ]
         };
 
@@ -197,37 +191,9 @@
         const activityList = document.getElementById('activity-list');
         const refreshBtn = document.getElementById('refresh-btn');
         const newMoodBtn = document.getElementById('new-mood-btn');
-        const priceFilter = document.getElementById('price-filter');
         const languageToggle = document.getElementById('language-toggle');
 
         let selectedMood = null;
-        let selectedPrice = 'all';
-
-        // Eventbrite API fetch
-        async function fetchActivities(mood) {
-            const apiKey = 'YOUR_EVENTBRITE_API_KEY'; // Replace with your Eventbrite API key
-            const url = `https://www.eventbriteapi.com/v3/events/search/?q=${mood}&location.address=Zurich,Switzerland&location.within=3km&token=${apiKey}`;
-            try {
-                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${apiKey}` } });
-                const data = await response.json();
-                const events = data.events.map(event => ({
-                    name: event.name.text,
-                    type: mood.charAt(0).toUpperCase() + mood.slice(1),
-                    distance: "Within 3 km",
-                    validUntil: "2 hours",
-                    description: event.description.text ? event.description.text.slice(0, 100) + '...' : 'Exciting event in Zurich',
-                    emoji: mood === 'chill' ? '☕' : mood === 'adventurous' ? '🥾' : mood === 'social' ? '🍻' : '🎨',
-                    special: event.is_free ? 'Free entry' : 'Check for discounts',
-                    source: 'eventbrite.com',
-                    price: event.is_free ? 0 : Math.floor(Math.random() * 50) + 10, // Mock price if not free
-                    rating: 4.5 // Mock rating (replace with Google Reviews API in production)
-                }));
-                return [...events, ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
-            } catch (error) {
-                console.error('API fetch failed:', error);
-                return [...(fallbackActivities[mood] || []), ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
-            }
-        }
 
         // Mood selection
         moodButtons.forEach(button => {
@@ -237,15 +203,22 @@
             });
         });
 
-        // Price filter
-        priceFilter.addEventListener('change', () => {
-            selectedPrice = priceFilter.value;
-            if (selectedMood) selectMood(selectedMood);
-        });
-
         // Language toggle (mock)
         languageToggle.addEventListener('change', (e) => {
             alert(`Switched to ${e.target.value === 'en' ? 'English' : 'Deutsch'} (Mock feature)`);
+        });
+
+        // Refresh button
+        refreshBtn.addEventListener('click', () => {
+            if (selectedMood) selectMood(selectedMood);
+        });
+
+        // New mood button
+        newMoodBtn.addEventListener('click', () => {
+            suggestionsSection.classList.add('hidden');
+            moodSection.classList.remove('hidden');
+            selectedMood = null;
+            moodButtons.forEach(btn => btn.classList.remove('selected'));
         });
 
         function selectMood(mood) {
@@ -255,25 +228,17 @@
             });
             moodSection.classList.add('hidden');
             loadingSection.classList.remove('hidden');
-            fetchActivities(mood).then(data => {
-                setTimeout(() => showSuggestions(mood, data), 1000);
-            });
+            setTimeout(() => showSuggestions(mood), 1000);
         }
 
-        function showSuggestions(mood, activities) {
+        function showSuggestions(mood) {
             loadingSection.classList.add('hidden');
             suggestionsSection.classList.remove('hidden');
             activityList.innerHTML = '';
 
-            const filteredActivities = activities.filter(activity => {
-                if (selectedPrice === 'all') return true;
-                if (selectedPrice === 'free') return activity.price === 0;
-                if (selectedPrice === '0-20') return activity.price > 0 && activity.price <= 20;
-                if (selectedPrice === '20-50') return activity.price > 20 && activity.price <= 50;
-                if (selectedPrice === '50+') return activity.price > 50;
-            });
+            const selectedActivities = [...(activities[mood] || []), ...instagramData.filter(d => d.type.toLowerCase().includes(mood))];
 
-            filteredActivities.forEach((activity, index) => {
+            selectedActivities.forEach((activity, index) => {
                 const activityCard = createActivityCard(activity);
                 activityList.appendChild(activityCard);
                 setTimeout(() => {
@@ -302,7 +267,6 @@
                             <span class="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-medium">${activity.type}</span>
                             <div class="text-right">
                                 <div class="text-xs text-gray-500 dark:text-gray-400">Valid for ${activity.validUntil}</div>
-                                <div class="text-xs text-accent font-medium">Price: ${activity.price === 0 ? 'Free' : `CHF ${activity.price}`}</div>
                                 <div class="text-xs text-yellow-500 font-medium">Rating: ${activity.rating}/5</div>
                             </div>
                         </div>
@@ -337,9 +301,18 @@
         }
 
         function showActivityDetails(name) {
-            const allActivities = [...Object.values(fallbackActivities).flat(), ...instagramData];
-            const activity = allActivities.find(a => a.name === name) || { name, description: 'Event details from Eventbrite', type: 'Event', distance: 'Within 3 km', price: 0, special: 'Check Eventbrite for details', validUntil: '2 hours', source: 'eventbrite.com', rating: 4.5 };
-            alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nPrice: ${activity.price === 0 ? 'Free' : `CHF ${activity.price}`}\nRating: ${activity.rating}/5\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\nSource: ${activity.source}`);
+            const allActivities = [...Object.values(activities).flat(), ...instagramData];
+            const activity = allActivities.find(a => a.name === name) || { 
+                name, 
+                description: 'Details for this activity', 
+                type: 'Event', 
+                distance: 'Within 3 km', 
+                special: 'Check source for details', 
+                validUntil: '2 hours', 
+                source: 'VibeCheck', 
+                rating: 4.5 
+            };
+            alert(`${activity.name}\n\n${activity.description}\n\nType: ${activity.type}\nDistance: ${activity.distance}\nRating: ${activity.rating}/5\nSpecial: ${activity.special}\nValid for: ${activity.validUntil}\nSource: ${activity.source}`);
         }
 
         // Mock notification opt-in
